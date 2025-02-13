@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 
 from .models import Lesson
 from .forms import LessonForm
@@ -15,6 +16,8 @@ def lesson_create(request):
         if form.is_valid():
             form.save()
             return redirect('lessons:list')
+        else:
+            messages.error(request, 'Name must contain only letters.')
     else:
         form = LessonForm()
     ctx = {'form': form}

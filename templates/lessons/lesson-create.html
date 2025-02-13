@@ -6,6 +6,25 @@
     <main class="container mx-auto flex-grow p-4">
         <h1 class="text-4xl font-bold mb-8">{% if lesson %} Edit Lesson {% else %} Create Lesson {% endif %}</h1>
         <form method="post" class="space-y-4">
+             {% if messages %}
+                    <div>
+                    {% for message in messages %}
+                        <div class="flex items-center justify-between w-full max-w-6xl mx-auto p-6 mb-6 text-white rounded-lg
+                            {% if message.tags == 'success' %}bg-green-600
+                            {% elif message.tags == 'info' %}bg-blue-600
+                            {% elif message.tags == 'warning' %}bg-yellow-600
+                            {% elif message.tags == 'error' %}bg-red-300 {% endif %}">
+                            <div class="flex items-center space-x-4 w-full">
+                                <i class="fas fa-info-circle"></i>
+                                <span>{{ message }}</span>
+                            </div>
+                            <button class="text-white hover:text-gray-200" onclick="this.parentElement.style.display='none';">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
             {% csrf_token %}
             <div>
                 <label for="name" class="block mb-2">Lesson Name:</label>
