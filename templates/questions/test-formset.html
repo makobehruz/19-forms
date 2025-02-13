@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if test %} Test Maker - Edit Test {% else %} Test Maker - Create Test {% endif %}{% endblock %}
+
+{% block content %}
+    <main class="container mx-auto flex-grow p-4">
+        <h1 class="text-4xl font-bold mb-8">{% if test %} Edit Test {% else %} Create Test {% endif %}</h1>
+        <form method="post" class="space-y-4" id="test-form">
+            {% csrf_token %}
+            <div>
+                <label for="name" class="block mb-2">Test Name:</label>
+                {{ form.name }}
+            </div>
+            <div>
+                <label for="lesson" class="block mb-2">Associated Lesson:</label>
+                {{ form.lesson }}
+            </div>
+            <div class="border-t border-gray-300 pt-4">
+                <h2 class="text-2xl font-bold mb-4">Questions</h2>
+                <div class="space-y-4" id="questions-container">
+                    {% if questions %}
+                        {% for question in questions %}
+                            <div class="question-formset border border-gray-300 rounded p-4">
+                                <h3 class="text-xl font-semibold mb-2">Question <span class="question-number">{{ forloop.counter }}</span></h3>
+                                <div class="mb-2">
+                                    <label for="question" class="block mb-2">Question:</label>
+                                    <input type="text" name="questions[]" value="{{ question.question }}" class="w-full border border-gray-300 rounded p-2" required>
+                                </div>
+                                <div class="space-y-2">
+                                    <div>
+                                        <label for="answer1" class="block mb-2">Answer 1:</label>
+                                        <input type="text" name="answers1[]" value="{{ question.answer1 }}" class="w-full border border-gray-300 rounded p-2" required>
+                                    </div>
+                                    <div>
+                                        <label for="answer2" class="block mb-2">Answer 2:</label>
+                                        <input type="text" name="answers2[]" value="{{ question.answer2 }}" class="w-full border border-gray-300 rounded p-2" required>
+                                    </div>
+                                </div>
+                                <button type="button" class="remove-question bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700 mt-2">Remove Question</button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <button type="button" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mt-4" id="add-question">Add Question</button>
+            </div>
+            <div>
+                <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    {% if test %}Update Test{% else %}Create Test{% endif %}
+                </button>
+            </div>
+            <div>
+                <a href="{% url 'questions:list' %}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Cancel</a>
+            </div>
+        </form>
+    </main>
+    <template id="question-template">
+        <div class="question-formset border border-gray-300 rounded p-4">
+            <h3 class="text-xl font-semibold mb-2">Question <span class="question-number"></span></h3>
+            <div class="mb-2">
+                <label for="question" class="block mb-2">Question:</label>
+                <input type="text" name="questions[]" class="w-full border border-gray-300 rounded p-2" required>
+            </div>
+            <div class="space-y-2">
+                <div>
+                    <label for="answer1" class="block mb-2">Answer 1:</label>
+                    <input type="text" name="answers1[]" class="w-full border border-gray-300 rounded p-2" required>
+                </div>
+                <div>
+                    <label for="answer2" class="block mb-2">Answer 2:</label>
+                    <input type="text" name="answers2[]" class="w-full border border-gray-300 rounded p-2" required>
+                </div>
+            </div>
+            <button type="button" class="remove-question bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700 mt-2">Remove Question</button>
+        </div>
+    </template>
+    {% load static %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% endblock %}

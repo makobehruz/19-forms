@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %} Test Maker - Test List {% endblock %}
+
+{% block content %}
+    <main class="container mx-auto flex-grow p-4">
+        <h1 class="text-4xl font-bold mb-8">Test List</h1>
+        <a href="{% url 'questions:create' %}" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 mb-4 inline-block">Create New Test</a>
+        {% if tests %}
+        <table class="w-full border-collapse border border-gray-300 mt-4">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 p-2">Test Name</th>
+                    <th class="border border-gray-300 p-2">Associated Lesson</th>
+                    <th class="border border-gray-300 p-2">Actions</th>
+                </tr>
+            </thead>
+            {% for test in tests %}
+            <tbody>
+                <tr>
+                    <td class="border border-gray-300 p-2">{{ test.name }}</td>
+                    <td class="border border-gray-300 p-2">{{ test.lesson }}</td>
+                    <td class="border border-gray-300 p-2">
+                        <a href="{{ test.get_edit_url }}" class="text-blue-600 hover:underline mr-2">Edit</a>
+                        <a href="{{ test.get_delete_url }}" class="text-red-600 hover:underline">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        {% else %}
+            <h2>No test available</h2>
+        {% endif %}
+    </main>
+{% endblock %}

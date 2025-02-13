@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if lesson %} Test Maker - Edit Lesson {% else %} Test Maker - Create Lesson {% endif %}{% endblock %}
+
+{% block content %}
+    <main class="container mx-auto flex-grow p-4">
+        <h1 class="text-4xl font-bold mb-8">{% if lesson %} Edit Lesson {% else %} Create Lesson {% endif %}</h1>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div>
+                <label for="name" class="block mb-2">Lesson Name:</label>
+                {{ form.name }}
+            </div>
+            <div>
+                <label for="desc" class="block mb-2">Description:</label>
+                {{ form.desc }}
+            </div>
+            <div>
+                {% if lesson %}
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Edit Lesson</button>
+                {% else %}
+                    <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Create Lesson</button>
+                {% endif %}
+                <a href="{% url 'lessons:list' %}" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 ml-2">Cancel</a>
+            </div>
+        </form>
+    </main>
+{% endblock %}
